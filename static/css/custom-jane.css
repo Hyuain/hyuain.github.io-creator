@@ -1,0 +1,24 @@
+code, kbd, pre, samp {
+    font-family: Microsoft Yahei;
+}
+
+.header .logo-wrapper .logo,
+.mobile-navbar .mobile-header-logo .logo {
+    font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+
+}
+
+.footer .icon-links a:last-child {
+    display: none;
+}
+
+.post .post-content code,
+.post .post-content pre {
+    font-family: Menlo, Consolas, source code pro, Inconsolata, Monaco, courier new, Microsoft Yahei, monospace;
+}
+
+.footer a.iconfont.icon-rss {
+    display: none;
+}
+
+body{background: black;}
