@@ -16,7 +16,7 @@ toc: true
 
 ---
 
-## Key Points
+# Key Points
 
 - 在 JavaScript 中，**函数** `Function` 也是一种 **对象** `Object`
 
@@ -37,46 +37,46 @@ toc: true
 其次是关于函数的几个描述，我们可以做几个实验来验证一下：
 
 ```js
-let arr = [1, 2, 3]
-let obj = { name: 'Harvey', age: '22'}
-let fn = function(){ console.log('hi') }
-
-console.dir(arr)
-/*
-{
-  0: 1,
-  1: 2,
-  2: 3,
-  length: 3,
-  __proto__: Array(0)
-}
-*/
-
-console.dir(obj)
-/*
-{
-  name: "Harvey",
-  age: "22",
-  __proto__: Object
-}
-*/
-
-console.dir(fn)
-/*
-{
-  length: 0,
-  name: "fn",
-  arguments: null,
-  caller: null,
-  prototype: {
-    constructor: ƒ ()
-    __proto__: Object
-  }
-  __proto__: ƒ ()
-}
-*/
-
-fn.prototype.constructor === fn // true
+    let arr = [1, 2, 3]
+    let obj = { name: 'Harvey', age: '22'}
+    let fn = function(){ console.log('hi') }
+    
+    console.dir(arr)
+    /*
+    {
+      0: 1,
+      1: 2,
+      2: 3,
+      length: 3,
+      __proto__: Array(0)
+    }
+    */
+    
+    console.dir(obj)
+    /*
+    {
+      name: "Harvey",
+      age: "22",
+      __proto__: Object
+    }
+    */
+    
+    console.dir(fn)
+    /*
+    {
+      length: 0,
+      name: "fn",
+      arguments: null,
+      caller: null,
+      prototype: {
+        constructor: ƒ ()
+        __proto__: Object
+      }
+      __proto__: ƒ ()
+    }
+    */
+    
+    fn.prototype.constructor === fn // true
 ```
 
 可以很清楚的看到，比起别的对象，函数确实是比较特别的，他天生就带有一个 `prototype` 属性，而且 `prototype` 中的 `constructor` 就是这个函数本身。
@@ -84,15 +84,15 @@ fn.prototype.constructor === fn // true
 我们也可以再验证一下最后一句话：
 
 ```js
-function Person(){}
-let me = new Person
-me.__proto__ === Person.prototype // true
+    function Person(){}
+    let me = new Person
+    me.__proto__ === Person.prototype // true
 ```
 
 知道了这样几个前置的知识，我们就可以往下讨论了。
 
 
-## 原型链
+# 原型链
 
 原型链的精髓其实就是刚才已经提到过的一句话：
 
@@ -112,7 +112,7 @@ me.__proto__ === Person.prototype // true
 
 `obj -> Object.prototype`
 
-### 数组的原型链
+## 数组的原型链
 
 > **数组的原型是 Array**
 
@@ -125,8 +125,8 @@ me.__proto__ === Person.prototype // true
 事实上，我们还会发现：
 
 ```js
-arr.__proto__.__proto__ === Object.prototype // true
-Array.prototype.__proto__ === Object.prototype // true
+    arr.__proto__.__proto__ === Object.prototype // true
+    Array.prototype.__proto__ === Object.prototype // true
 ```
 
 也就是说，一个数组的原型链要稍微复杂一些：
@@ -135,7 +135,7 @@ Array.prototype.__proto__ === Object.prototype // true
 
 等等，这意味着 `Object.prototype` 构造了 `Array.prototype`？这个问题我们稍后再谈。
 
-### 函数的原型
+## 函数的原型
 
 > **函数的原型是 Function**
 
@@ -149,16 +149,16 @@ Array.prototype.__proto__ === Object.prototype // true
 
 `fn -> Function.prototype -> Object.prototype`
 
-### 修改原型链
+## 修改原型链
 
 通过直接修改 `__proto__` 就可以达到修改原型链的目的
 
 ```js
-let obj1 = { a: 1 }
-let obj2 = { b: 2 }
-let obj3 = { c: 3 }
-obj2.__proto__ = obj1
-obj3.__proto__ = obj2
+    let obj1 = { a: 1 }
+    let obj2 = { b: 2 }
+    let obj3 = { c: 3 }
+    obj2.__proto__ = obj1
+    obj3.__proto__ = obj2
 ```
 
 这样，他们的原型链就变成了：
@@ -167,17 +167,17 @@ obj3.__proto__ = obj2
 但是这种方法是不推荐的，我们更推荐使用 `Object.create()` 方法，他的使用方法如下：
 
 ```js
-let obj1 = { a: 1 }
-let obj2 = Object.create(obj1)
-obj2.b = 2
-let obj3 = Object.create(obj2)
-obj3.c = 3
+    let obj1 = { a: 1 }
+    let obj2 = Object.create(obj1)
+    obj2.b = 2
+    let obj3 = Object.create(obj2)
+    obj3.c = 3
 ```
 
 这样与上面直接修改 `__proto__` 效果是一样的。
 
 
-## 继承
+# 继承
 
 这里我们就发现，如果我们按照上面的方法修改原型链，得到的原型链 `obj3 -> obj2 -> obj1 -> Object.prototype` 有点问题！
 
@@ -193,66 +193,66 @@ obj3.c = 3
 
 那么问题来了，这种在 **构造函数之间的继承** 应该怎么写呢？
 
-### 第一步：使用 `call` 来调用父类构造函数
+## 第一步：使用 `call` 来调用父类构造函数
 
 ```js
-function Person(姓名) {
-  this.姓名 = 姓名
-}
-Person.prototype.自我介绍 = function() {
-  console.log(`你好，我是 ${this.姓名}`)
-}
-
-function Student(姓名, 学号){
-  Person.call(this, 姓名)
-  this.学号 = 学号
-}
+    function Person(姓名) {
+      this.姓名 = 姓名
+    }
+    Person.prototype.自我介绍 = function() {
+      console.log(`你好，我是 ${this.姓名}`)
+    }
+    
+    function Student(姓名, 学号){
+      Person.call(this, 姓名)
+      this.学号 = 学号
+    }
 ```
 
 可以通过 `console.dir()` 来分别看看 `Person` 和 `Student`
 
 ```js
-// Person
-{
-  name: "Person",
-  prototype: {
-    自我介绍: ƒ (),
-    constructor: ƒ Person(姓名),
-    __proto__: Object,
-  },
-  __proto__: ƒ () // Function.prototype
-}
-
-// Student
-{
-  name: "Student",
-  prototype: {
-    constructor: ƒ Student(姓名, 学号),
-    __proto__: Object,
-  },
-  __proto__: ƒ () // Function.prototype
-}
+    // Person
+    {
+      name: "Person",
+      prototype: {
+        自我介绍: ƒ (),
+        constructor: ƒ Person(姓名),
+        __proto__: Object,
+      },
+      __proto__: ƒ () // Function.prototype
+    }
+    
+    // Student
+    {
+      name: "Student",
+      prototype: {
+        constructor: ƒ Student(姓名, 学号),
+        __proto__: Object,
+      },
+      __proto__: ƒ () // Function.prototype
+    }
 ```
 
 我们尝试创建一个 `Student` 对象 `小明`
 
 ```js
-let 小明 = new Student('小明', 123456)
-/*
-{
-  姓名: "小明",
-  学号: 123456,
-
-  __proto__: {
-    constructor: ƒ Student(姓名, 学号),
-    __proto__: Object,
-  }
-
-}
-*/
-
-小明.自我介绍()
-// Uncaught TypeError: 小明.自我介绍 is not a function
+    let 小明 = new Student('小明', 123456)
+    /*
+    {
+      姓名: "小明",
+      学号: 123456,
+    
+      __proto__: {
+        constructor: ƒ Student(姓名, 学号),
+        __proto__: Object,
+      }
+    
+    }
+    */
+    
+    小明.自我介绍()
+    // Uncaught TypeError: 小明.自我介绍 is not a function
 ```
 
 > `小明` 如何拿到 `学号` ？
@@ -271,7 +271,7 @@ let 小明 = new Student('小明', 123456)
 
 因为可以看到，`小明` 这个对象中没有 `自我介绍` 属性，他的 `__proto__` 中也没有，因此他找不到 `自我介绍`
 
-### 第二步：建立原型链
+## 第二步：建立原型链
 
 ```js
 Student.prototype = Object.create(Person.prototype)
@@ -280,18 +280,18 @@ Student.prototype = Object.create(Person.prototype)
 我们再打印出 `Student` 来看看
 
 ```js
-// Student
-{
-  name: "Student",
-  prototype: {
-    __proto__:{
-      自我介绍: ƒ (),
-      constructor: ƒ Person(姓名),
-      __proto__: Object,
+    // Student
+    {
+      name: "Student",
+      prototype: {
+        __proto__:{
+          自我介绍: ƒ (),
+          constructor: ƒ Person(姓名),
+          __proto__: Object,
+        }
+      },
+      __proto__: ƒ () // Function
     }
-  },
-  __proto__: ƒ () // Function
-}
 ```
 
 我们发现 `prototype` 里面的 `constructor` 不见了，并且里面的 `__proto__` 变得跟 `Person.prototype` 一样了
@@ -299,177 +299,176 @@ Student.prototype = Object.create(Person.prototype)
 这个时候再 `new` 一个 `小花` 看看：
 
 ```js
-let 小花 = new Student('小花', 234567)
-/*
-{
-  姓名: "小花",
-  学号: 234567,
-  __proto__: {
-
-    __proto__: {
-      自我介绍: ƒ (),
-      constructor: ƒ Person(姓名),
-      __proto__: Object,
+    let 小花 = new Student('小花', 234567)
+    /*
+    {
+      姓名: "小花",
+      学号: 234567,
+      __proto__: {
+    
+        __proto__: {
+          自我介绍: ƒ (),
+          constructor: ƒ Person(姓名),
+          __proto__: Object,
+        }
+    
+      }
     }
-
-  }
-}
-*/
-
-小花.自我介绍()
-// '你好，我是 小花'
+    */
+    
+    小花.自我介绍()
+    // '你好，我是 小花'
 ```
 
 小花现在会自我介绍了，但是还有个小问题，我们发现 `小花.__proto__` 中的 `constructor` 不见了！我们得赶紧修复一下。
 
-### 第三步：解决 constructor 的问题
+## 第三步：解决 constructor 的问题
 
 ```js
-Student.prototype.constructor = Student
+    Student.prototype.constructor = Student
 ```
 
 看看现在 `Student` 的样子
 
 ```js
-// Student
-{
-  name: "Student",
-  prototype: {
-    constructor: ƒ Student(姓名, 学号),
-    __proto__:{
-      自我介绍: ƒ (),
-      constructor: ƒ Person(姓名),
-      __proto__: Object,
+    // Student
+    {
+      name: "Student",
+      prototype: {
+        constructor: ƒ Student(姓名, 学号),
+        __proto__:{
+          自我介绍: ƒ (),
+          constructor: ƒ Person(姓名),
+          __proto__: Object,
+        }
+      },
+      __proto__: ƒ () // Function
     }
-  },
-  __proto__: ƒ () // Function
-}
 ```
 
 最后请出我们的小红
 
 ```js
-let 小红 = new Student('小花', 345678)
-/*
-{
-  姓名: "小红",
-  学号: 345678,
-  __proto__: {
-
-    constructor: ƒ Student(姓名, 学号),
-
-    __proto__: {
-      自我介绍: ƒ (),
-      constructor: ƒ Person(姓名),
-      __proto__: Object,
+    let 小红 = new Student('小花', 345678)
+    /*
+    {
+      姓名: "小红",
+      学号: 345678,
+      __proto__: {
+    
+        constructor: ƒ Student(姓名, 学号),
+    
+        __proto__: {
+          自我介绍: ƒ (),
+          constructor: ƒ Person(姓名),
+          __proto__: Object,
+        }
+    
+      }
     }
-
-  }
-}
-*/
-
-小红.自我介绍()
-// ‘你好，我是 小红’
+    */
+    
+    小红.自我介绍()
+    // ‘你好，我是 小红’
 ```
 
 OK，一切正常。
 
-### 总结
+## 总结
 
 ```js
-function Person(姓名) {
-  this.姓名 = 姓名
-}
-
-Person.prototype.自我介绍 = function() {
-  console.log(`你好，我是 ${this.姓名}`)
-}
-
-function Student(姓名, 学号){
-  Person.call(this, 姓名) // 调用父级构造函数
-  this.学号 = 学号
-}
-
-Student.prototype = Object.create(Person.prototype) // 建立原型链
-
-Student.prototype.constructor = Student // 解决 constructor 问题
-/*
-{
-  name: "Student",
-
-  prototype: {
-
-    constructor: ƒ Student(姓名, 学号),
-    // Student.prototype 里面的 constructor 就是 Student
-
-    __proto__:{
-      // Student.prototype 里面的 __proto__ 是 Person.prototype
-      自我介绍: ƒ (),
-      constructor: ƒ Person(姓名),
-      __proto__: Object,
+    function Person(姓名) {
+      this.姓名 = 姓名
     }
-
-  },
-
-  __proto__: ƒ () // Function
-}
-*/
-
-Student.prototype.报数 = function() {
-  console.log(`我的学号是 ${this.学号}`)
-}
-
-let 小红 = new Student('小红', 345678)
-/*
-{
-  姓名: "小红"
-  学号: 345678
-  __proto__: {
-
-    constructor: ƒ Student(姓名, 学号)
-    // 小红 是由 Student 构造的
-    // 小红.__proto__ 跟 Student.prototype 是一样的
-
-    __proto__: {
-      自我介绍: ƒ ()
-      constructor: ƒ Person(姓名)
-      __proto__: Object
+    
+    Person.prototype.自我介绍 = function() {
+      console.log(`你好，我是 ${this.姓名}`)
     }
-
-  }
-}
-*/
-
-小红.自我介绍()
-小红.报数()
-// ‘你好，我是 小红’
-
+    
+    function Student(姓名, 学号){
+      Person.call(this, 姓名) // 调用父级构造函数
+      this.学号 = 学号
+    }
+    
+    Student.prototype = Object.create(Person.prototype) // 建立原型链
+    
+    Student.prototype.constructor = Student // 解决 constructor 问题
+    /*
+    {
+      name: "Student",
+    
+      prototype: {
+    
+        constructor: ƒ Student(姓名, 学号),
+        // Student.prototype 里面的 constructor 就是 Student
+    
+        __proto__:{
+          // Student.prototype 里面的 __proto__ 是 Person.prototype
+          自我介绍: ƒ (),
+          constructor: ƒ Person(姓名),
+          __proto__: Object,
+        }
+    
+      },
+    
+      __proto__: ƒ () // Function
+    }
+    */
+    
+    Student.prototype.报数 = function() {
+      console.log(`我的学号是 ${this.学号}`)
+    }
+    
+    let 小红 = new Student('小红', 345678)
+    /*
+    {
+      姓名: "小红"
+      学号: 345678
+      __proto__: {
+    
+        constructor: ƒ Student(姓名, 学号)
+        // 小红 是由 Student 构造的
+        // 小红.__proto__ 跟 Student.prototype 是一样的
+    
+        __proto__: {
+          自我介绍: ƒ ()
+          constructor: ƒ Person(姓名)
+          __proto__: Object
+        }
+    
+      }
+    }
+    */
+    
+    小红.自我介绍()
+    小红.报数()
+    // ‘你好，我是 小红’
 ```
 
 ### 用 class 继承
 
 ```js
-class Person {
-    constructor(姓名) {
+    class Person {
+      constructor(姓名) {
         this.姓名 = 姓名
-    }
-    自我介绍() {
+      }
+      自我介绍() {
         console.log(`你好，我是 ${this.姓名}`)
+      }
     }
-}
-
-class Student extends Person {
-    constructor(姓名, 学号) {
+    
+    class Student extends Person {
+      constructor(姓名, 学号) {
         super(姓名) // 这里的 姓名 两个字要与父类中的一样
         this.学号 = 学号
-    }
-    报数() {
+      }
+      报数() {
         console.log(`我的学号是 ${this.学号}`)
+      }
     }
-}
-
-let 小红 = new Student('小红', 345678)
-
-小红.自我介绍()
-小红.报数()
+    
+    let 小红 = new Student('小红', 345678)
+    
+    小红.自我介绍()
+    小红.报数()
 ```
